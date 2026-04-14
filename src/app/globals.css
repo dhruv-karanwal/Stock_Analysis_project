@@ -257,3 +257,24 @@ body {
     border-radius: 8px;
   }
 }
+
+/* Glass Input Styling */
+.glass-input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #E2E8F0;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 245, 160, 0.4);
+  box-shadow: 0 0 15px rgba(0, 245, 160, 0.1);
+}
+
+.glass-input::placeholder {
+  color: #475569;
+}

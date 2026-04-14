@@ -102,15 +102,20 @@ export default function LandingPage() {
               <a key={l} href={`#${l.toLowerCase().replace(' ', '-')}`} className="hover:text-[#E2E8F0] transition-colors">{l}</a>
             ))}
           </div>
-          <Link href="/dashboard">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#00F5A0] to-[#00C9FF] text-black text-sm font-bold flex items-center gap-2"
-            >
-              Open Dashboard <ArrowRight className="w-3.5 h-3.5" />
-            </motion.button>
-          </Link>
+          <div className="flex items-center gap-6 text-sm">
+            <Link href="/login" className="hidden sm:block text-[#64748B] hover:text-[#E2E8F0] transition-colors font-medium">
+              Sign In
+            </Link>
+            <Link href="/dashboard">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#00F5A0] to-[#00C9FF] text-black text-sm font-bold flex items-center gap-2 shadow-lg shadow-[#00F5A0]/10"
+              >
+                Open Dashboard <ArrowRight className="w-3.5 h-3.5" />
+              </motion.button>
+            </Link>
+          </div>
         </div>
       </nav>
 
