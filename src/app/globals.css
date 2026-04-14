@@ -208,3 +208,52 @@ body {
 /* Hide scrollbar but keep functionality */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* --- Responsive Adjustments & Media Queries --- */
+
+/* Adjust grid size for mobile */
+@media (max-width: 768px) {
+  .bg-grid {
+    background-size: 30px 30px;
+  }
+  
+  .glass-card {
+    padding: 1.25rem; /* Slightly tighter padding on mobile */
+  }
+
+  .text-glow-primary {
+    text-shadow: 0 0 10px rgba(0, 245, 160, 0.4); /* Subtler glow on small screens */
+  }
+}
+
+/* Optimize hover effects for touch devices */
+@media (hover: hover) {
+  .glass-card:hover {
+    border-color: rgba(0, 245, 160, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 245, 160, 0.08);
+    transform: translateY(-4px);
+  }
+  
+  .gradient-border:hover::before {
+    opacity: 1;
+  }
+}
+
+/* Fallback for devices without hover support */
+@media (hover: none) {
+  .glass-card:active {
+    background: rgba(26, 34, 53, 0.8);
+    transform: scale(0.98);
+  }
+}
+
+/* Extra small screen fixes */
+@media (max-width: 400px) {
+  .metric-value {
+    font-size: 1.5rem !important; /* Scale down hero metrics on tiny screens */
+  }
+  
+  .glass-card {
+    border-radius: 8px;
+  }
+}

@@ -71,9 +71,11 @@ function FloatingOrb({ x, y, color, size }: { x: string; y: string; color: strin
       className="absolute rounded-full blur-3xl pointer-events-none"
       style={{
         left: x, top: y,
-        width: size, height: size,
+        width: 'min(90vw, var(--orb-size))',
+        height: 'min(90vw, var(--orb-size))',
         backgroundColor: color,
-      }}
+        '--orb-size': `${size}px`,
+      } as any}
     />
   );
 }
@@ -139,7 +141,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-5xl md:text-7xl font-black font-display leading-tight mb-6"
+            className="text-4xl sm:text-5xl md:text-7xl font-black font-display leading-tight mb-6"
           >
             <span className="text-[#E2E8F0]">Predict Stock</span>
             <br />
