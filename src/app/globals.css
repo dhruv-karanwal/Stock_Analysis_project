@@ -53,32 +53,34 @@ body {
 
 /* Glassmorphism */
 .glass {
-  background: rgba(17, 24, 39, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.glass-dark {
-  background: rgba(11, 15, 25, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(17, 24, 39, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.glass-dark {
+  background: rgba(11, 15, 25, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 .glass-card {
-  background: rgba(26, 34, 53, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 12px;
-  transition: all 0.3s ease;
+  background: rgba(26, 34, 53, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2);
 }
 
 .glass-card:hover {
+  background: rgba(26, 34, 53, 0.5);
   border-color: rgba(0, 245, 160, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 245, 160, 0.08);
-  transform: translateY(-1px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 245, 160, 0.1);
+  transform: translateY(-4px);
 }
 
 /* Gradients */
@@ -114,7 +116,15 @@ body {
 }
 
 .text-glow-primary {
-  text-shadow: 0 0 20px rgba(0, 245, 160, 0.5);
+  text-shadow: 0 0 20px rgba(0, 245, 160, 0.6);
+}
+
+.neon-glow-mint {
+  box-shadow: 0 0 20px rgba(0, 245, 160, 0.2), 0 0 40px rgba(0, 245, 160, 0.1);
+}
+
+.neon-glow-purple {
+  box-shadow: 0 0 20px rgba(127, 90, 240, 0.2), 0 0 40px rgba(127, 90, 240, 0.1);
 }
 
 /* Grid pattern background */
@@ -211,18 +221,36 @@ body {
 
 /* --- Responsive Adjustments & Media Queries --- */
 
-/* Adjust grid size for mobile */
-@media (max-width: 768px) {
+/* Mobile (Small Phones) */
+@media (max-width: 640px) {
   .bg-grid {
     background-size: 30px 30px;
   }
   
   .glass-card {
-    padding: 1.25rem; /* Slightly tighter padding on mobile */
+    padding: 1.25rem;
+    border-radius: 16px;
   }
 
   .text-glow-primary {
-    text-shadow: 0 0 10px rgba(0, 245, 160, 0.4); /* Subtler glow on small screens */
+    text-shadow: 0 0 10px rgba(0, 245, 160, 0.4);
+  }
+
+  section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .metric-value {
+    font-size: 1.5rem;
+  }
+}
+
+/* Tablet / Small Desktop */
+@media (min-width: 641px) and (max-width: 1024px) {
+  section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
   }
 }
 

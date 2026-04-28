@@ -36,41 +36,55 @@ export function IndicatorCard({ indicator, index = 0 }: IndicatorCardProps) {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08, duration: 0.4 }}
-      className="glass-card p-4 flex flex-col gap-3"
+      className="glass-card p-5 flex flex-col gap-4 group hover:neon-glow-mint transition-all"
     >
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div
             className="w-2 h-2 rounded-full animate-pulse"
-            style={{ backgroundColor: color, boxShadow: `0 0 6px ${color}` }}
+            style={{ backgroundColor: color, boxShadow: `0 0 10px ${color}` }}
           />
-          <span className="text-[#E2E8F0] text-sm font-semibold">{indicator.name}</span>
+          <span className="text-[#E2E8F0] text-sm font-bold font-display">{indicator.name}</span>
         </div>
         <div
-          className="px-2 py-0.5 rounded-full text-xs font-medium border"
-          style={{ color: signalColor, backgroundColor: signalBg, borderColor: signalColor + '40' }}
+          className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border"
+          style={{ color: signalColor, backgroundColor: signalBg, borderColor: signalColor + '30' }}
         >
           {indicator.signal}
         </div>
       </div>
 
-      {/* Value */}
-      <div>
-        <div className="text-2xl font-bold metric-value" style={{ color }}>
-          {typeof indicator.value === 'number'
-            ? indicator.value.toFixed(2)
-            : indicator.value}
+      {/* Value & Description */}
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex-1">
+          <div className="text-3xl font-black metric-value leading-none" style={{ color }}>
+            {indicator.value}
+          </div>
+          <p className="text-[#64748B] text-[11px] mt-2 leading-relaxed italic">
+            {indicator.description}
+          </p>
         </div>
-        <div className="text-xs text-[#64748B] mt-0.5">{indicator.id} Value</div>
+        <div className="flex flex-col items-end gap-2">
+           <div className={`px-2 py-1 rounded-md text-[9px] font-bold ${indicator.usedInModel ? 'bg-[#00F5A0]/10 text-[#00F5A0] border border-[#00F5A0]/20' : 'bg-white/5 text-[#475569] border border-white/5'}`}>
+              MODEL: {indicator.usedInModel ? 'ACTIVE' : 'INACTIVE'}
+           </div>
+        </div>
       </div>
 
       {/* Mini sparkline */}
       {indicator.data && indicator.data.length > 0 && (
-        <div className="h-10 opacity-80">
+        <div className="h-12 opacity-60 group-hover:opacity-100 transition-opacity mt-2">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={indicator.data.map((v, i) => ({ i, v }))}>
-              <Line type="monotone" dataKey="v" stroke={color} strokeWidth={1.5} dot={false} />
+              <Line 
+                type="monotone" 
+                dataKey="v" 
+                stroke={color} 
+                strokeWidth={2} 
+                dot={false}
+                animationDuration={1500}
+              />
             </LineChart>
           </ResponsiveContainer>
         </div>

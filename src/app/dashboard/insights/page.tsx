@@ -4,10 +4,11 @@ import { motion } from 'framer-motion';
 import { Brain, TrendingUp, Target, Zap } from 'lucide-react';
 import { FeatureImportanceChart } from '@/components/FeatureImportanceChart';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   AreaChart, Area,
 } from 'recharts';
 import { getFeatureImportance, getModelMetrics, getHistoricalAccuracy } from '@/lib/mockData';
+import { ExplanationBlock } from '@/components/layout/ExplanationBlock';
 
 const metrics = getModelMetrics();
 const featureData = getFeatureImportance();
@@ -22,127 +23,138 @@ const METRIC_CARDS = [
 
 export default function InsightsPage() {
   return (
-    <div className="p-5 space-y-6">
+    <div className="p-8 space-y-10 bg-[#0B0F19] min-h-full">
       {/* Header */}
-      <div>
-        <h1 className="text-xl font-bold font-display text-[#E2E8F0]">Model Insights</h1>
-        <p className="text-[#64748B] text-sm mt-1">ML model interpretability and performance analytics</p>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-white/5">
+        <div>
+          <h1 className="text-4xl font-black font-display text-[#E2E8F0] tracking-tighter flex items-center gap-3">
+            <Brain className="w-8 h-8 text-[#00F5A0]" />
+            Model Intelligence
+          </h1>
+          <p className="text-[#64748B] text-base mt-2">ML model interpretability and institutional performance analytics</p>
+        </div>
+        <div className="flex items-center gap-3">
+           <div className="flex flex-col items-end">
+             <span className="text-[10px] font-black text-[#475569] uppercase tracking-[0.2em]">Model State</span>
+             <span className="text-[#00F5A0] text-xs font-bold flex items-center gap-1.5">
+               <div className="w-1.5 h-1.5 rounded-full bg-[#00F5A0] animate-pulse" />
+               Operational
+             </span>
+           </div>
+        </div>
       </div>
 
       {/* Model Metrics */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {METRIC_CARDS.map((m, i) => (
           <motion.div
             key={m.label}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="glass-card p-4"
+            className="glass-card p-6 group hover:neon-glow-mint transition-all"
           >
-            <div className="flex items-center gap-2 mb-3">
-              <div className="p-1.5 rounded-lg" style={{ backgroundColor: m.color + '20' }}>
-                <m.icon className="w-3.5 h-3.5" style={{ color: m.color }} />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 rounded-xl" style={{ backgroundColor: m.color + '15' }}>
+                <m.icon className="w-4 h-4" style={{ color: m.color }} />
               </div>
-              <span className="text-[#64748B] text-xs">{m.label}</span>
+              <span className="text-[#64748B] text-[10px] font-black uppercase tracking-widest">{m.label}</span>
             </div>
-            <div className="text-2xl font-bold metric-value" style={{ color: m.color }}>{m.value}</div>
-            <p className="text-[#475569] text-xs mt-1">{m.description}</p>
+            <div className="text-4xl font-black metric-value tracking-tighter mb-2" style={{ color: m.color }}>{m.value}</div>
+            <p className="text-[#475569] text-[10px] font-medium leading-relaxed">{m.description}</p>
           </motion.div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
-        {/* Feature Importance Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="glass-card p-5"
-        >
-          <h2 className="text-[#E2E8F0] font-semibold text-sm mb-4 flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-[#00F5A0]" />
-            Feature Importance
-          </h2>
-          <p className="text-[#64748B] text-xs mb-4">Which indicators contribute most to the prediction?</p>
-          <FeatureImportanceChart data={featureData} type="bar" />
-        </motion.div>
-
-        {/* Radar Chart */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="glass-card p-5"
-        >
-          <h2 className="text-[#E2E8F0] font-semibold text-sm mb-4 flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-[#7F5AF0]" />
-            Indicator Contribution Radar
-          </h2>
-          <p className="text-[#64748B] text-xs mb-4">Multi-dimensional view of indicator contributions</p>
-          <FeatureImportanceChart data={featureData} type="radar" />
-        </motion.div>
-
-        {/* Historical Accuracy */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="glass-card p-5 xl:col-span-2"
-        >
-          <h2 className="text-[#E2E8F0] font-semibold text-sm mb-4 flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-[#00C9FF]" />
-            Historical Accuracy (30 days)
-          </h2>
-          <div className="h-52">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={histData} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
-                <defs>
-                  <linearGradient id="accGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#00C9FF" stopOpacity={0.25} />
-                    <stop offset="95%" stopColor="#00C9FF" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
-                <XAxis dataKey="date" tick={{ fill: '#64748B', fontSize: 10 }} axisLine={false} tickLine={false} interval={6} />
-                <YAxis tick={{ fill: '#64748B', fontSize: 10 }} domain={[70, 100]} axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} width={40} />
-                <Tooltip
-                  contentStyle={{ backgroundColor: '#111827', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, fontSize: 12 }}
-                  labelStyle={{ color: '#94A3B8' }}
-                  itemStyle={{ color: '#00C9FF' }}
-                />
-                <Area type="monotone" dataKey="accuracy" stroke="#00C9FF" strokeWidth={2} fill="url(#accGrad)" dot={false} />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Model Info */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="glass-card p-5"
-      >
-        <h2 className="text-[#E2E8F0] font-semibold text-sm mb-4">Model Configuration</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
-          {[
-            { k: 'Algorithm', v: 'XGBoost + LSTM Ensemble' },
-            { k: 'Training Data', v: '5 Years Historical' },
-            { k: 'Features', v: '8 Technical Indicators' },
-            { k: 'Last Updated', v: 'March 2026' },
-            { k: 'MSE', v: metrics.mse.toFixed(4) },
-            { k: 'MAE', v: metrics.mae.toFixed(4) },
-            { k: 'Lookback Window', v: '20 Trading Days' },
-            { k: 'Prediction Horizon', v: '5–10 Days Forward' },
-          ].map(({ k, v }) => (
-            <div key={k} className="bg-[#0B0F19] rounded-xl p-3">
-              <div className="text-[#64748B] mb-1">{k}</div>
-              <div className="text-[#E2E8F0] font-semibold">{v}</div>
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+        <div className="xl:col-span-2 space-y-8">
+          {/* Feature Importance Bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="glass-card p-8"
+          >
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-[#E2E8F0] font-black text-xl tracking-tight mb-1">Feature Contribution Analysis</h2>
+                <p className="text-[#64748B] text-xs">Relative weighting of input indicators in the final prediction</p>
+              </div>
+              <div className="px-3 py-1 rounded-lg bg-white/5 border border-white/5 text-[10px] font-bold text-[#94A3B8]">
+                SHAP VALUES
+              </div>
             </div>
-          ))}
+            <div className="h-[350px]">
+              <FeatureImportanceChart data={featureData} type="bar" />
+            </div>
+          </motion.div>
+
+          {/* Historical Accuracy */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="glass-card p-8"
+          >
+             <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-[#E2E8F0] font-black text-xl tracking-tight mb-1">Training Accuracy (30 Days)</h2>
+                <p className="text-[#64748B] text-xs">Backtested performance of the XGBoost + LSTM ensemble</p>
+              </div>
+            </div>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={histData} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
+                  <defs>
+                    <linearGradient id="accGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#00F5A0" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#00F5A0" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
+                  <XAxis dataKey="date" hide />
+                  <YAxis domain={[80, 100]} axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 10 }} />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#111827', borderRadius: 12, border: '1px solid rgba(255,255,255,0.1)', fontSize: 12 }}
+                  />
+                  <Area type="monotone" dataKey="accuracy" stroke="#00F5A0" strokeWidth={3} fill="url(#accGrad)" dot={{ r: 4, fill: '#00F5A0', strokeWidth: 0 }} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </motion.div>
         </div>
-      </motion.div>
+
+        <div className="space-y-8">
+          {/* Radar Chart */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="glass-card p-8 bg-gradient-to-br from-[#1a2235]/40 to-transparent"
+          >
+            <h2 className="text-[#E2E8F0] font-black text-lg mb-2 tracking-tight">Indicator Bias</h2>
+            <p className="text-[#64748B] text-xs mb-8">Multi-dimensional sensitivity analysis</p>
+            <div className="h-64">
+              <FeatureImportanceChart data={featureData} type="radar" />
+            </div>
+          </motion.div>
+
+          <div className="space-y-4">
+             <h3 className="text-[#E2E8F0] font-bold text-sm uppercase tracking-widest px-1">Interpretability</h3>
+             <ExplanationBlock 
+                title="Model Interpretability"
+                description="We use SHAP (SHapley Additive exPlanations) to decompose the model's output into contributions from each technical indicator."
+                whyItMatters="Ensures the model is making decisions based on sound financial theory rather than noise."
+             />
+             <ExplanationBlock 
+                title="Ensemble Architecture"
+                description="Our pipeline utilizes an XGBoost regressor for non-linear feature interactions and an LSTM for sequential dependency mapping."
+                whyItMatters="Hybridizing these architectures reduces bias and improves generalizability across volatile market sessions."
+                icon="help"
+             />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
