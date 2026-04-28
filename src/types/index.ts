@@ -31,6 +31,7 @@ export interface Indicator {
   signal?: string;
   signalType?: 'bullish' | 'bearish' | 'neutral' | 'overbought' | 'oversold';
   data?: number[];
+  usedInModel?: boolean;
 }
 
 // Prediction types

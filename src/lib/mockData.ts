@@ -86,6 +86,7 @@ export function generateIndicators(symbol: string): Indicator[] {
       signal: rsiVal > 70 ? 'Overbought' : rsiVal < 30 ? 'Oversold' : 'Neutral',
       signalType: rsiVal > 70 ? 'overbought' : rsiVal < 30 ? 'oversold' : 'neutral',
       data: Array.from({ length: 20 }, () => Math.floor(Math.random() * 100)),
+      usedInModel: true,
     },
     {
       id: 'MACD',
@@ -95,6 +96,7 @@ export function generateIndicators(symbol: string): Indicator[] {
       signal: macdVal > 0 ? 'Bullish Crossover' : 'Bearish Crossover',
       signalType: macdVal > 0 ? 'bullish' : 'bearish',
       data: Array.from({ length: 20 }, (_, i) => +(Math.sin(i / 3) * 2 + (Math.random() - 0.5)).toFixed(2)),
+      usedInModel: true,
     },
     {
       id: 'BB',
@@ -104,6 +106,7 @@ export function generateIndicators(symbol: string): Indicator[] {
       signal: bbWidth > 3.5 ? 'High Volatility' : bbWidth < 2 ? 'Low Volatility' : 'Normal Range',
       signalType: bbWidth > 3.5 ? 'bearish' : 'neutral',
       data: Array.from({ length: 20 }, () => +(bbWidth + (Math.random() - 0.5) * 0.5).toFixed(2)),
+      usedInModel: true,
     },
     {
       id: 'MA',
@@ -113,6 +116,7 @@ export function generateIndicators(symbol: string): Indicator[] {
       signal: Math.random() > 0.5 ? 'Golden Cross' : 'Below SMA 200',
       signalType: Math.random() > 0.5 ? 'bullish' : 'bearish',
       data: Array.from({ length: 20 }, (_, i) => 150 + i * 0.5 + (Math.random() - 0.5) * 3),
+      usedInModel: false,
     },
     {
       id: 'ATR',
@@ -122,6 +126,7 @@ export function generateIndicators(symbol: string): Indicator[] {
       signal: atrVal > 8 ? 'High Volatility' : atrVal < 4 ? 'Low Volatility' : 'Moderate',
       signalType: atrVal > 8 ? 'bearish' : 'neutral',
       data: Array.from({ length: 20 }, () => +(atrVal + (Math.random() - 0.5) * 2).toFixed(2)),
+      usedInModel: true,
     },
     {
       id: 'Stochastic',
@@ -131,6 +136,7 @@ export function generateIndicators(symbol: string): Indicator[] {
       signal: stochVal > 80 ? 'Overbought' : stochVal < 20 ? 'Oversold' : 'Neutral',
       signalType: stochVal > 80 ? 'overbought' : stochVal < 20 ? 'oversold' : 'neutral',
       data: Array.from({ length: 20 }, () => Math.floor(Math.random() * 100)),
+      usedInModel: true,
     },
   ];
 }

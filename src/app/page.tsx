@@ -5,12 +5,13 @@ import { useRef } from 'react';
 import Link from 'next/link';
 import {
   ArrowRight, Zap, BarChart3, Brain, Shield, TrendingUp,
-  Activity, Target, ChevronRight, Star,
+  Activity, Target, ChevronRight, Star, Cpu, Database,
 } from 'lucide-react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer,
 } from 'recharts';
+import { MLPipeline } from '@/components/ml/MLPipeline';
 
 // Generate demo chart data
 const DEMO_CHART = Array.from({ length: 60 }, (_, i) => ({
@@ -71,9 +72,11 @@ function FloatingOrb({ x, y, color, size }: { x: string; y: string; color: strin
       className="absolute rounded-full blur-3xl pointer-events-none"
       style={{
         left: x, top: y,
-        width: size, height: size,
+        width: 'min(90vw, var(--orb-size))',
+        height: 'min(90vw, var(--orb-size))',
         backgroundColor: color,
-      }}
+        '--orb-size': `${size}px`,
+      } as any}
     />
   );
 }
@@ -85,7 +88,7 @@ export default function LandingPage() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#0B0F19] overflow-x-hidden flex flex-col">
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 glass-dark border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -95,25 +98,30 @@ export default function LandingPage() {
             </div>
             <span className="font-bold gradient-text-primary font-display">VolatilityAI</span>
           </div>
-          <div className="hidden md:flex items-center gap-8 text-sm text-[#64748B]">
+          <div className="hidden md:flex flex-1 justify-center items-center gap-8 text-sm text-[#64748B]">
             {['Features', 'How It Works', 'Model', 'Demo'].map(l => (
               <a key={l} href={`#${l.toLowerCase().replace(' ', '-')}`} className="hover:text-[#E2E8F0] transition-colors">{l}</a>
             ))}
           </div>
-          <Link href="/dashboard">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#00F5A0] to-[#00C9FF] text-black text-sm font-bold flex items-center gap-2"
-            >
-              Open Dashboard <ArrowRight className="w-3.5 h-3.5" />
-            </motion.button>
-          </Link>
+          <div className="flex items-center justify-end gap-6 text-sm flex-shrink-0">
+            <Link href="/login" className="hidden sm:block text-[#64748B] hover:text-[#E2E8F0] transition-colors font-medium">
+              Sign In
+            </Link>
+            <Link href="/dashboard">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#00F5A0] to-[#00C9FF] text-black text-sm font-bold flex items-center gap-2 shadow-lg shadow-[#00F5A0]/10"
+              >
+                Open Dashboard <ArrowRight className="w-3.5 h-3.5" />
+              </motion.button>
+            </Link>
+          </div>
         </div>
       </nav>
 
       {/* Hero */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden bg-grid">
+      <section ref={heroRef} className="relative w-full min-h-screen flex items-center justify-center pt-24 pb-12 md:pt-32 md:pb-20 overflow-hidden bg-grid">
         {/* Floating orbs */}
         <FloatingOrb x="10%" y="20%" color="#00F5A0" size={400} />
         <FloatingOrb x="70%" y="10%" color="#7F5AF0" size={350} />
@@ -139,7 +147,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-5xl md:text-7xl font-black font-display leading-tight mb-6"
+            className="text-4xl sm:text-5xl md:text-7xl font-black font-display leading-tight mb-6"
           >
             <span className="text-[#E2E8F0]">Predict Stock</span>
             <br />
@@ -208,7 +216,7 @@ export default function LandingPage() {
       </section>
 
       {/* Demo chart */}
-      <section id="demo" className="py-20 px-6">
+      <section id="demo" className="relative w-full py-16 md:py-24 px-6 border-t border-white/5 bg-[#0B0F19]">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -260,8 +268,69 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* How it Works Section */}
+      <section id="how-it-works" className="relative w-full py-24 px-6 border-t border-white/5 bg-[#0D1117]">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16 space-y-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#7F5AF0]/10 border border-[#7F5AF0]/20 text-[#7F5AF0] text-[10px] font-black uppercase tracking-widest mb-4"
+            >
+              <Cpu className="w-3 h-3" /> System Architecture
+            </motion.div>
+            <h2 className="text-4xl md:text-5xl font-black text-[#E2E8F0] tracking-tight">
+              The Intelligence behind the <span className="gradient-text-primary">Engine</span>
+            </h2>
+            <p className="text-[#64748B] text-lg max-w-2xl mx-auto">
+              Our system combines traditional financial engineering with modern deep learning to deliver institutional-grade analysis.
+            </p>
+          </div>
+
+          <div className="bg-[#111827]/30 border border-white/5 rounded-[3rem] p-8 md:p-12 backdrop-blur-xl mb-20 overflow-hidden">
+             <MLPipeline />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-20">
+            {[
+              { 
+                title: "Data Ingestion", 
+                desc: "Sub-second polling of market data including OHLCV and order book depth for maximum precision.",
+                icon: Database
+              },
+              { 
+                title: "Feature Engineering", 
+                desc: "Calculating 50+ derived metrics and technical indicators to create a robust model input vector.",
+                icon: Zap
+              },
+              { 
+                title: "Ensemble Prediction", 
+                desc: "Weighted analysis from XGBoost and LSTM layers ensuring both short-term and long-term trend capture.",
+                icon: Target
+              }
+            ].map((item, i) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="space-y-4"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center border border-white/5">
+                  <item.icon className="w-7 h-7 text-[#00F5A0]" />
+                </div>
+                <h3 className="text-[#E2E8F0] font-bold text-xl">{item.title}</h3>
+                <p className="text-[#64748B] text-sm leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
-      <section id="features" className="py-20 px-6">
+      <section id="features" className="relative w-full py-16 md:py-24 px-6 bg-[#0B0F19]">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -317,7 +386,7 @@ export default function LandingPage() {
       </section>
 
       {/* How it works */}
-      <section id="how-it-works" className="py-20 px-6 bg-[#0d1117]">
+      <section id="how-it-works" className="relative w-full py-16 md:py-24 px-6 bg-[#0d1117] border-y border-white/5">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
@@ -360,7 +429,7 @@ export default function LandingPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 px-6">
+      <section className="relative w-full py-16 md:py-24 px-6 bg-[#0B0F19]">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
@@ -402,33 +471,35 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6">
-        <div className="max-w-3xl mx-auto text-center">
+      <section className="relative w-full py-16 md:py-24 px-6 bg-[#0B0F19]">
+        <div className="max-w-4xl mx-auto flex flex-col items-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="glass-card p-12 border border-[#00F5A0]/15 relative overflow-hidden"
+            className="w-full glass-card p-8 md:p-16 border border-[#00F5A0]/20 relative overflow-hidden text-center"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-[#00F5A0]/5 to-[#7F5AF0]/5 pointer-events-none" />
-            <div className="relative z-10">
-              <Zap className="w-12 h-12 text-[#00F5A0] mx-auto mb-4" />
-              <h2 className="text-3xl md:text-4xl font-black font-display text-[#E2E8F0] mb-4">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#00F5A0]/10 to-[#7F5AF0]/10 pointer-events-none" />
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="w-16 h-16 rounded-2xl bg-[#00F5A0]/10 flex items-center justify-center mb-8">
+                <Zap className="w-8 h-8 text-[#00F5A0]" />
+              </div>
+              <h2 className="text-3xl md:text-5xl font-black font-display text-[#E2E8F0] mb-6 tracking-tight">
                 Ready to Predict <span className="gradient-text-primary">Volatility?</span>
               </h2>
-              <p className="text-[#64748B] mb-8">
-                Open the dashboard and run your first prediction in under 30 seconds.
+              <p className="text-[#94A3B8] text-lg mb-10 max-w-xl">
+                Join professional traders and start making data-driven decisions with our advanced machine learning toolkit.
               </p>
               <Link href="/dashboard">
                 <motion.button
-                  whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(0, 245, 160, 0.4)' }}
+                  whileHover={{ scale: 1.05, boxShadow: '0 0 50px rgba(0, 245, 160, 0.5)' }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-10 py-4 rounded-2xl bg-gradient-to-r from-[#00F5A0] to-[#00C9FF] text-black font-black text-lg flex items-center gap-2 mx-auto"
+                  className="px-12 py-5 rounded-2xl bg-gradient-to-r from-[#00F5A0] to-[#00C9FF] text-black font-black text-xl flex items-center gap-3 shadow-2xl"
                 >
-                  <Zap className="w-5 h-5" />
+                  <Zap className="w-6 h-6" />
                   Launch Dashboard
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-6 h-6" />
                 </motion.button>
               </Link>
             </div>
