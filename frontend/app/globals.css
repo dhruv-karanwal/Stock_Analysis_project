@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+* {
+  @apply transition-colors;
+}
+
+body {
+  @apply bg-slate-900 text-slate-100;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
